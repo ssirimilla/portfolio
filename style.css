@@ -1,6 +1,105 @@
 body {
-  /* Set line height to 1.5 times the font size
-	   and use the OS’s UI font as the website font
-	 */
+  max-width: 100ch;
+  margin-inline: max(1em, (100% - 100ch) / 2);
   font: 100%/1.5 system-ui;
 }
+
+/* Accent color (global) */
+:root {
+  --color-accent: oklch(40% 57% 900);
+}
+
+html {
+  accent-color: var(--color-accent);
+}
+
+/* NAV LAYOUT */
+nav {
+  display: flex;
+  margin-bottom: 1em;
+  border-bottom: 1px solid oklch(80% 3% 200);
+}
+
+/* Make all links equal width */
+nav a {
+  flex: 1;
+  text-align: center;
+  padding: 0.5em;
+
+  text-decoration: none;
+  color: inherit;
+}
+
+/* CURRENT PAGE */
+nav a.current {
+  border-bottom: 0.4em solid oklch(80% 3% 200);
+  padding-bottom: 0.1em; /* reduces jump from thick border */
+}
+
+/* HOVER EFFECT */
+nav a:hover {
+  border-bottom: 0.4em solid var(--color-accent);
+  background-color: oklch(from var(--color-accent) 95% 5% h);
+}
+
+/* Step 3.1: Make form controls use same font */
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+/* Step 3.3: Grid layout */
+form {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1em;
+}
+
+/* Each label spans full row and becomes its own grid */
+label {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+}
+
+/* Make button span full width */
+button {
+  grid-column: 1 / -1;
+}
+
+/* Optional: nicer input styling */
+input,
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.4em;
+}
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+  gap: 1em;
+}
+
+.projects article {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+}
+
+.projects h2 {
+  margin: 0;
+}
+
+/* Big title */
+h1 {
+  font-size: 400%;
+}
+
+/* All headings */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
