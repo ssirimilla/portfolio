@@ -13,10 +13,7 @@ let pages = [
   { url: "https://github.com/ssirimilla", title: "GitHub" },
 ];
 
-const BASE_PATH =
-  location.hostname === "localhost" || location.hostname === "127.0.0.1"
-    ? "/"
-    : "/portfolio/"; // change this
+
 
 let nav = document.createElement("nav");
 document.body.prepend(nav);
