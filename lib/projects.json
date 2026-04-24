@@ -1,0 +1,17 @@
+[
+  {
+    "title": "Portfolio Website",
+    "image": "../images/portfolio.png",
+    "description": "A personal website showcasing my projects."
+  },
+  {
+    "title": "Weather App",
+    "image": "../images/weather.png",
+    "description": "Displays live weather using an API."
+  },
+  {
+    "title": "Game Project",
+    "image": "../images/game.png",
+    "description": "A browser-based game using JavaScript."
+  }
+]
