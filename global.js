@@ -75,6 +75,10 @@ export async function fetchJSON(url) {
   }
 }
 
+export async function fetchGitHubData(ssirimilla) {
+  return fetchJSON(`https://api.github.com/users/${ssirimilla}`);
+}
+
 export function renderProjects(projects, containerElement, headingLevel = "h2") {
   containerElement.innerHTML = "";
 
