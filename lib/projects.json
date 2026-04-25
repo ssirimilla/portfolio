@@ -13,5 +13,78 @@
     "title": "Game Project",
     "image": "../images/game.png",
     "description": "A browser-based game using JavaScript."
+  },
+  
+  {
+    "title": "Personal Portfolio Website",
+    "year": 2026,
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Responsive portfolio website built using HTML, CSS, and JavaScript."
+  },
+  {
+    "title": "Projects JSON Templating",
+    "year": 2026,
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Converted hardcoded project cards into reusable JSON-rendered components."
+  },
+  {
+    "title": "GitHub API Stats Dashboard",
+    "year": 2026,
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Fetched GitHub profile stats dynamically using JavaScript and APIs."
+  },
+  {
+    "title": "ECE 65 Diode Lab",
+    "year": 2026,
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Measured IV characteristics of diodes and analyzed clipping circuits."
+  },
+  {
+    "title": "Population Forecast Analysis",
+    "year": 2026,
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Explored demographic trends from 2022 to 2100 using Python."
+  },
+  {
+    "title": "Economic Networks Research",
+    "year": 2026,
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Studied trade and economic structures across Asia and Africa."
+  },
+  {
+    "title": "Whole Foods Pricing Visualization",
+    "year": 2026,
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Created violin plots and comparisons of store pricing data."
+  },
+  {
+    "title": "Weather Forecast App",
+    "year": 2025,
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Simple app displaying current weather from an API."
+  },
+  {
+    "title": "Python Automation Scripts",
+    "year": 2025,
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Wrote scripts for file management and data cleaning."
+  },
+  {
+    "title": "Club Website Redesign",
+    "year": 2025,
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Improved UI and content management for a student organization."
+  },
+  {
+    "title": "Java Calculator App",
+    "year": 2024,
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Desktop calculator created in Java for practice."
+  },
+  {
+    "title": "First Coding Project",
+    "year": 2023,
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Beginner programming project experimenting with loops and arrays."
   }
 ]
