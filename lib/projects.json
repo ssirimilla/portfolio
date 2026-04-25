@@ -1,17 +1,17 @@
 [
   {
     "title": "Portfolio Website",
-    "image": "../images/portfolio.png",
+    "image":  "https://dsc106.com/labs/lab02/images/empty.svg",
     "description": "A personal website showcasing my projects."
   },
   {
     "title": "Weather App",
-    "image": "../images/weather.png",
+    "image":  "https://dsc106.com/labs/lab02/images/empty.svg",
     "description": "Displays live weather using an API."
   },
   {
     "title": "Game Project",
-    "image": "../images/game.png",
+    "image":  "https://dsc106.com/labs/lab02/images/empty.svg",
     "description": "A browser-based game using JavaScript."
   },
   
