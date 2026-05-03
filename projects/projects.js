@@ -65,16 +65,13 @@ function updateView() {
 
 function renderPie(projectsGiven) {
 
-  svg.selectAll("*").remove();
-  legend.selectAll("*").remove();
-
-  const rolled = d3.rollups(
+  const rolledData = d3.rollups(
     projectsGiven,
     v => v.length,
     d => d.year
   );
 
-  const data = rolled.map(([year, count]) => ({
+  const data = rolledData.map(([year, count]) => ({
     label: year,
     value: count
   }));
@@ -88,31 +85,27 @@ function renderPie(projectsGiven) {
 
   const colors = d3.scaleOrdinal(d3.schemeTableau10);
 
-  // -------------------------
-  // PIE WEDGES
-  // -------------------------
+  svg.selectAll("*").remove();
+  legend.selectAll("*").remove();
+
   svg.selectAll("path")
     .data(arcData)
     .join("path")
     .attr("d", arc)
     .attr("fill", (_, i) => colors(i))
-    .attr("class", (_, i) => i === selectedIndex ? "selected" : "")
     .on("click", (_, i) => {
       selectedIndex = selectedIndex === i ? -1 : i;
+
+      console.log("clicked:", i);
+      console.log("selectedIndex:", selectedIndex);
+
       updateView();
     });
 
-  // -------------------------
-  // LEGEND
-  // -------------------------
   data.forEach((d, idx) => {
     legend.append("li")
-      .attr("class", idx === selectedIndex ? "selected legend-item" : "legend-item")
+      .attr("class", idx === selectedIndex ? "selected" : "")
       .attr("style", `--color:${colors(idx)}`)
-      .html(`<span class="swatch"></span>${d.label} <em>(${d.value})</em>`)
-      .on("click", () => {
-        selectedIndex = selectedIndex === idx ? -1 : idx;
-        updateView();
-      });
+      .html(`<span class="swatch"></span>${d.label} <em>(${d.value})</em>`);
   });
 }
