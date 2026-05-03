@@ -8,89 +8,103 @@ const projects = await fetchJSON('/portfolio/lib/projects.json');
 
 const projectsContainer = document.querySelector(".projects");
 const searchInput = document.querySelector(".searchBar");
+const svg = d3.select("#projects-pie-plot");
+const legend = d3.select(".legend");
 
 let query = "";
+let selectedIndex = -1;
 
-// -----------------------------
-// Render initial state
-// -----------------------------
-renderProjects(projects, projectsContainer, "h2");
-document.querySelector("h1").textContent = `${projects.length} Projects`;
+function updateView() {
 
-renderPieChart(projects);
-
-// -----------------------------
-// Search logic
-// -----------------------------
-searchInput.addEventListener("input", (event) => {
-  query = event.target.value.toLowerCase();
-
-  const filteredProjects = projects.filter((project) => {
-    const values = Object.values(project).join(" ").toLowerCase();
+  // -------------------------
+  // STEP 1: search filter
+  // -------------------------
+  let filtered = projects.filter(p => {
+    const values = Object.values(p).join(" ").toLowerCase();
     return values.includes(query);
   });
 
-  renderProjects(filteredProjects, projectsContainer, "h2");
-  renderPieChart(filteredProjects);
-});
+  // -------------------------
+  // STEP 2: year filter (pie click)
+  // -------------------------
+  if (selectedIndex !== -1) {
+    const rolled = d3.rollups(
+      filtered,
+      v => v.length,
+      d => d.year
+    );
 
-// -----------------------------
-// Reactive pie chart function
-// -----------------------------
-function renderPieChart(projectsGiven) {
+    const data = rolled.map(([year, count]) => ({
+      label: year,
+      value: count
+    }));
 
-  // roll up data by year
-  const rolledData = d3.rollups(
+    const selectedYear = data[selectedIndex]?.label;
+
+    filtered = filtered.filter(p => String(p.year) === selectedYear);
+  }
+
+  // -------------------------
+  // Render list
+  // -------------------------
+  renderProjects(filtered, projectsContainer, "h2");
+
+  // -------------------------
+  // Render pie + legend
+  // -------------------------
+  renderPie(filtered);
+}
+
+function renderPie(projectsGiven) {
+
+  svg.selectAll("*").remove();
+  legend.selectAll("*").remove();
+
+  const rolled = d3.rollups(
     projectsGiven,
     v => v.length,
     d => d.year
   );
 
-  const data = rolledData.map(([year, count]) => ({
+  const data = rolled.map(([year, count]) => ({
     label: year,
     value: count
   }));
 
-  const sliceGenerator = d3.pie()
-    .value(d => d.value);
+  const pie = d3.pie().value(d => d.value);
+  const arcData = pie(data);
 
-  const arcGenerator = d3.arc()
+  const arc = d3.arc()
     .innerRadius(20)
     .outerRadius(40);
 
-  const arcData = sliceGenerator(data);
-
   const colors = d3.scaleOrdinal(d3.schemeTableau10);
 
-  // -----------------------------
-  // Clear old chart + legend
-  // -----------------------------
-  d3.select("#projects-pie-plot").selectAll("*").remove();
-  d3.select(".legend").selectAll("*").remove();
-
-  // -----------------------------
-  // Draw pie
-  // -----------------------------
-  d3.select("#projects-pie-plot")
-    .selectAll("path")
+  // -------------------------
+  // PIE WEDGES
+  // -------------------------
+  svg.selectAll("path")
     .data(arcData)
     .join("path")
-    .attr("d", arcGenerator)
-    .attr("fill", (_, i) => colors(i));
+    .attr("d", arc)
+    .attr("fill", (_, i) => colors(i))
+    .attr("class", (_, i) => i === selectedIndex ? "selected" : "")
+    .on("click", (_, i) => {
+      selectedIndex = selectedIndex === i ? -1 : i;
+      updateView();
+    });
 
-  // -----------------------------
-  // Draw legend
-  // -----------------------------
-  const legend = d3.select(".legend");
-
+  // -------------------------
+  // LEGEND
+  // -------------------------
   data.forEach((d, idx) => {
-    legend
-      .append("li")
-      .attr("class", "legend-item")
+    legend.append("li")
+      .attr("class", idx === selectedIndex ? "selected legend-item" : "legend-item")
       .attr("style", `--color:${colors(idx)}`)
-      .html(`
-        <span class="swatch"></span>
-        ${d.label} <em>(${d.value})</em>
-      `);
+      .html(`<span class="swatch"></span>${d.label} <em>(${d.value})</em>`)
+      .on("click", () => {
+        selectedIndex = selectedIndex === idx ? -1 : idx;
+        updateView();
+      });
   });
 }

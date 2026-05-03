@@ -166,3 +166,24 @@ select {
   display: inline-block;
   border-radius: 3px;
 }
+
+.selected {
+  --color: oklch(30.035% 0.09436 1.011) !important;
+}
+
+.selected:is(path) {
+  fill: var(--color);
+}
+
+path {
+  cursor: pointer;
+  transition: 200ms;
+}
+
+path:not(:hover) {
+  opacity: 0.9;
+}
+
+svg:has(path:hover) path:not(:hover) {
+  opacity: 0.5;
+}
