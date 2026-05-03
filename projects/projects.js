@@ -94,9 +94,6 @@ function renderPie(projectsGiven) {
     .attr("class", (_, i) => i === selectedIndex ? "selected" : "")
     .on("click", (_, i) => {
       selectedIndex = selectedIndex === i ? -1 : i;
-      console.log("clicked slice index:", i);
-      console.log("selectedIndex now:", selectedIndex);
-      console.log("pieData:", pieData);
       updateView();
     });
     
@@ -110,9 +107,6 @@ function renderPie(projectsGiven) {
       .html(`<span class="swatch"></span>${d.label} <em>(${d.value})</em>`)
       .on("click", () => {
         selectedIndex = selectedIndex === idx ? -1 : idx;
-        console.log("clicked legend index:", i);
-        console.log("selectedIndex now:", selectedIndex);
-
         updateView();
       });
   });
