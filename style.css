@@ -125,3 +125,44 @@ select {
   display: block;
   margin: 1rem auto;
 }
+
+/* Container layout */
+.container {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Pie size */
+#projects-pie-plot {
+  width: 180px;
+  height: 180px;
+}
+
+/* Legend layout */
+.legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  margin: 1rem;
+  border: 1px solid #ccc;
+  list-style: none;
+}
+
+/* Each legend item */
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Color swatch */
+.swatch {
+  width: 1em;
+  height: 1em;
+  aspect-ratio: 1 / 1;
+  background-color: var(--color);
+  display: inline-block;
+  border-radius: 3px;
+}

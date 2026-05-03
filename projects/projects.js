@@ -9,19 +9,58 @@ renderProjects(projects, projectsContainer, "h2");
 // Fix title
 document.querySelector("h1").textContent = `${projects.length} Projects`;
 
-// PIE CHART
-let data = projects.map(d => d.year);
 
-let arcGenerator = d3.arc().innerRadius(0).outerRadius(30);
-let sliceGenerator = d3.pie();
+// -----------------------------
+// Prepare pie chart data (projects per year)
+// -----------------------------
+let rolledData = d3.rollups(
+  projects,
+  v => v.length,
+  d => d.year
+);
+
+let data = rolledData.map(([year, count]) => ({
+  label: year,
+  value: count
+}));
+
+// -----------------------------
+// Pie + arc generators
+// -----------------------------
+let sliceGenerator = d3.pie()
+  .value(d => d.value);
+
+let arcGenerator = d3.arc()
+  .innerRadius(20)
+  .outerRadius(40);
 
 let arcData = sliceGenerator(data);
 
+// Color scale
 let colors = d3.scaleOrdinal(d3.schemeTableau10);
 
+// -----------------------------
+// Draw pie chart
+// -----------------------------
 d3.select('#projects-pie-plot')
   .selectAll('path')
   .data(arcData)
   .join('path')
   .attr('d', arcGenerator)
   .attr('fill', (_, i) => colors(i));
+
+// -----------------------------
+// Build legend
+// -----------------------------
+let legend = d3.select('.legend');
+
+data.forEach((d, idx) => {
+  legend
+    .append('li')
+    .attr('class', 'legend-item')
+    .attr('style', `--color:${colors(idx)}`)
+    .html(`
+      <span class="swatch"></span>
+      ${d.label} <em>(${d.value})</em>
+    `);
+});
