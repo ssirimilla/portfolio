@@ -6,24 +6,22 @@ const projects = await fetchJSON("../lib/projects.json");
 const projectsContainer = document.querySelector(".projects");
 renderProjects(projects, projectsContainer, "h2");
 
-const title = document.querySelector(".projects-title");
-title.textContent = `${projects.length} Projects`;
+// Fix title
+document.querySelector("h1").textContent = `${projects.length} Projects`;
 
-document.addEventListener("DOMContentLoaded", () => {
-  let data = [1, 2, 3, 4, 5, 5];
+// PIE CHART
+let data = projects.map(d => d.year);
 
-  let arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
-  let sliceGenerator = d3.pie();
+let arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
+let sliceGenerator = d3.pie();
 
-  let arcData = sliceGenerator(data);
-  let arcs = arcData.map(d => arcGenerator(d));
+let arcData = sliceGenerator(data);
 
-  let colors = d3.scaleOrdinal(d3.schemeTableau10);
+let colors = d3.scaleOrdinal(d3.schemeTableau10);
 
-  arcs.forEach((arc, idx) => {
-    d3.select('#projects-pie-plot')
-      .append('path')
-      .attr('d', arc)
-      .attr('fill', colors(idx));
-  });
-});
+d3.select('#projects-pie-plot')
+  .selectAll('path')
+  .data(arcData)
+  .join('path')
+  .attr('d', arcGenerator)
+  .attr('fill', (_, i) => colors(i));
