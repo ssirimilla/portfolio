@@ -12,7 +12,7 @@ document.querySelector("h1").textContent = `${projects.length} Projects`;
 // PIE CHART
 let data = projects.map(d => d.year);
 
-let arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
+let arcGenerator = d3.arc().innerRadius(0).outerRadius(20);
 let sliceGenerator = d3.pie();
 
 let arcData = sliceGenerator(data);
