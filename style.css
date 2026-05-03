@@ -120,8 +120,8 @@ select {
 }
 
 #projects-pie-plot {
-  width: 200px;   /* or 150px */
-  height: 200px;
+  width: 700px;   /* or 150px */
+  height: 700px;
   display: block;
   margin: 1rem auto;
 }
