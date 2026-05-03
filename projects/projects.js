@@ -15,7 +15,7 @@ let query = "";
 let selectedYear = null;
 
 // -----------------------------
-// Event: search
+// Search input
 // -----------------------------
 searchInput.addEventListener("input", (e) => {
   query = e.target.value.toLowerCase();
@@ -26,25 +26,25 @@ searchInput.addEventListener("input", (e) => {
 updateView();
 
 // -----------------------------
-// Main update pipeline
+// Main update function
 // -----------------------------
 function updateView() {
-  // 1. Text filter
+  // 1. Filter by search
   let filtered = projects.filter((p) =>
     Object.values(p).join(" ").toLowerCase().includes(query)
   );
 
-  // 2. Year filter (from pie)
+  // 2. Filter by selected year
   if (selectedYear !== null) {
     filtered = filtered.filter(
       (p) => String(p.year) === String(selectedYear)
     );
   }
 
-  // 3. Render list
+  // 3. Render project list
   renderProjects(filtered, projectsContainer, "h2");
 
-  // 4. Aggregate once
+  // 4. Aggregate data (year counts)
   const data = d3.rollups(
     filtered,
     (v) => v.length,
@@ -54,32 +54,34 @@ function updateView() {
     value: count,
   }));
 
+  // Optional: sort years
+  data.sort((a, b) => d3.ascending(a.label, b.label));
+
   // 5. Render pie + legend
   renderPie(data);
 }
 
 // -----------------------------
-// Pie chart
+// Pie chart renderer
 // -----------------------------
 function renderPie(data) {
-  const radius = 40;
+  const radius = 50;
 
   const pie = d3.pie().value((d) => d.value);
   const arc = d3.arc().innerRadius(20).outerRadius(radius);
   const colors = d3.scaleOrdinal(d3.schemeTableau10);
 
-  // Clear
+  // Clear previous render
   svg.selectAll("*").remove();
   legend.selectAll("*").remove();
 
-  // Center group
+  // Create centered group
   const g = svg
     .attr("viewBox", `${-radius} ${-radius} ${radius * 2} ${radius * 2}`)
     .append("g");
 
   // Draw arcs
-  const arcs = g
-    .selectAll("path")
+  g.selectAll("path")
     .data(pie(data))
     .join("path")
     .attr("d", arc)
@@ -87,9 +89,15 @@ function renderPie(data) {
     .attr("class", (d) =>
       d.data.label === selectedYear ? "selected" : ""
     )
+    .style("cursor", "pointer")
     .on("click", (event, d) => {
-      selectedYear =
-        selectedYear === d.data.label ? null : d.data.label;
+      const year = d.data.label;
+
+      selectedYear = selectedYear === year ? null : year;
+
+      console.log("clicked year:", year);
+      console.log("selectedYear:", selectedYear);
+
       updateView();
     });
 
@@ -102,13 +110,16 @@ function renderPie(data) {
       d.label === selectedYear ? "selected" : ""
     )
     .style("--color", (_, i) => colors(i))
+    .style("cursor", "pointer")
     .html(
       (d) =>
         `<span class="swatch"></span>${d.label} <em>(${d.value})</em>`
     )
     .on("click", (event, d) => {
-      selectedYear =
-        selectedYear === d.label ? null : d.label;
+      const year = d.label;
+
+      selectedYear = selectedYear === year ? null : year;
+
       updateView();
     });
 }
