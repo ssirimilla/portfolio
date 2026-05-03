@@ -13,6 +13,7 @@ const legend = d3.select(".legend");
 
 let query = "";
 let selectedIndex = -1;
+let pieData = [];
 
 searchInput.addEventListener("input", (e) => {
   query = e.target.value.toLowerCase();
@@ -34,21 +35,12 @@ function updateView() {
   // -------------------------
   // STEP 2: year filter (pie click)
   // -------------------------
-  if (selectedIndex !== -1) {
-    const rolled = d3.rollups(
-      filtered,
-      v => v.length,
-      d => d.year
-    );
+  if (selectedIndex !== -1 && pieData[selectedIndex]) {
+  const selectedYear = pieData[selectedIndex].label;
 
-    const data = rolled.map(([year, count]) => ({
-      label: year,
-      value: count
-    }));
-
-    const selectedYear = data[selectedIndex]?.label;
-
-    filtered = filtered.filter(p => String(p.year) === selectedYear);
+  filtered = filtered.filter(p =>
+    String(p.year) === String(selectedYear)
+  );
   }
 
   // -------------------------
@@ -63,6 +55,10 @@ function updateView() {
 }
 
 function renderPie(projectsGiven) {
+    pieData = rolledData.map(([year, count]) => ({
+    label: year,
+    value: count
+    }));
 
   svg.selectAll("*").remove();
   legend.selectAll("*").remove();
