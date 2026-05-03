@@ -118,3 +118,10 @@ html {
 select {
   font-family: inherit;
 }
+
+#projects-pie-plot {
+  width: 200px;   /* or 150px */
+  height: 200px;
+  display: block;
+  margin: 1rem auto;
+}
