@@ -14,6 +14,13 @@ const legend = d3.select(".legend");
 let query = "";
 let selectedIndex = -1;
 
+searchInput.addEventListener("input", (e) => {
+  query = e.target.value.toLowerCase();
+  updateView();
+});
+
+updateView();
+
 function updateView() {
 
   // -------------------------
@@ -107,4 +114,9 @@ function renderPie(projectsGiven) {
         updateView();
       });
   });
+
+  searchInput.addEventListener("input", (e) => {
+  query = e.target.value.toLowerCase();
+  updateView();
+});
 }
