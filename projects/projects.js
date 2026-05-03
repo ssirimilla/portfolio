@@ -1,75 +1,96 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 import { fetchJSON, renderProjects } from "../global.js";
 
-const projects = await fetchJSON("../lib/projects.json");
+// -----------------------------
+// Load data
+// -----------------------------
+const projects = await fetchJSON('/portfolio/lib/projects.json');
 
 const projectsContainer = document.querySelector(".projects");
-renderProjects(projects, projectsContainer, "h2");
+const searchInput = document.querySelector(".searchBar");
 
-// Fix title
+let query = "";
+
+// -----------------------------
+// Render initial state
+// -----------------------------
+renderProjects(projects, projectsContainer, "h2");
 document.querySelector("h1").textContent = `${projects.length} Projects`;
 
+renderPieChart(projects);
 
 // -----------------------------
-// Prepare pie chart data (projects per year)
+// Search logic
 // -----------------------------
-let rolledData = d3.rollups(
-  projects,
-  v => v.length,
-  d => d.year
-);
+searchInput.addEventListener("input", (event) => {
+  query = event.target.value.toLowerCase();
 
-let data = rolledData.map(([year, count]) => ({
-  label: year,
-  value: count
-}));
-
-// -----------------------------
-// Pie + arc generators
-// -----------------------------
-let sliceGenerator = d3.pie()
-  .value(d => d.value);
-
-let arcGenerator = d3.arc()
-  .innerRadius(20)
-  .outerRadius(40);
-
-let arcData = sliceGenerator(data);
-
-// Color scale
-let colors = d3.scaleOrdinal(d3.schemeTableau10);
-
-// -----------------------------
-// Draw pie chart
-// -----------------------------
-d3.select('#projects-pie-plot')
-  .selectAll('path')
-  .data(arcData)
-  .join('path')
-  .attr('d', arcGenerator)
-  .attr('fill', (_, i) => colors(i));
-
-// -----------------------------
-// Build legend
-// -----------------------------
-let legend = d3.select('.legend');
-
-data.forEach((d, idx) => {
-  legend
-    .append('li')
-    .attr('class', 'legend-item')
-    .attr('style', `--color:${colors(idx)}`)
-    .html(`
-      <span class="swatch"></span>
-      ${d.label} <em>(${d.value})</em>
-    `);
-    
-d3.selectAll('#projects-pie-plot path')
-  .on('mouseenter', function () {
-    d3.select(this).attr('opacity', 0.6);
-  })
-  .on('mouseleave', function () {
-    d3.select(this).attr('opacity', 1);
+  const filteredProjects = projects.filter((project) => {
+    const values = Object.values(project).join(" ").toLowerCase();
+    return values.includes(query);
   });
 
+  renderProjects(filteredProjects, projectsContainer, "h2");
+  renderPieChart(filteredProjects);
 });
+
+// -----------------------------
+// Reactive pie chart function
+// -----------------------------
+function renderPieChart(projectsGiven) {
+
+  // roll up data by year
+  const rolledData = d3.rollups(
+    projectsGiven,
+    v => v.length,
+    d => d.year
+  );
+
+  const data = rolledData.map(([year, count]) => ({
+    label: year,
+    value: count
+  }));
+
+  const sliceGenerator = d3.pie()
+    .value(d => d.value);
+
+  const arcGenerator = d3.arc()
+    .innerRadius(20)
+    .outerRadius(40);
+
+  const arcData = sliceGenerator(data);
+
+  const colors = d3.scaleOrdinal(d3.schemeTableau10);
+
+  // -----------------------------
+  // Clear old chart + legend
+  // -----------------------------
+  d3.select("#projects-pie-plot").selectAll("*").remove();
+  d3.select(".legend").selectAll("*").remove();
+
+  // -----------------------------
+  // Draw pie
+  // -----------------------------
+  d3.select("#projects-pie-plot")
+    .selectAll("path")
+    .data(arcData)
+    .join("path")
+    .attr("d", arcGenerator)
+    .attr("fill", (_, i) => colors(i));
+
+  // -----------------------------
+  // Draw legend
+  // -----------------------------
+  const legend = d3.select(".legend");
+
+  data.forEach((d, idx) => {
+    legend
+      .append("li")
+      .attr("class", "legend-item")
+      .attr("style", `--color:${colors(idx)}`)
+      .html(`
+        <span class="swatch"></span>
+        ${d.label} <em>(${d.value})</em>
+      `);
+  });
+}
