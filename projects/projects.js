@@ -63,4 +63,13 @@ data.forEach((d, idx) => {
       <span class="swatch"></span>
       ${d.label} <em>(${d.value})</em>
     `);
+    
+d3.selectAll('#projects-pie-plot path')
+  .on('mouseenter', function () {
+    d3.select(this).attr('opacity', 0.6);
+  })
+  .on('mouseleave', function () {
+    d3.select(this).attr('opacity', 1);
+  });
+
 });
