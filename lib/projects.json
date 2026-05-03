@@ -1,16 +1,19 @@
 [
   {
     "title": "Portfolio Website",
+    "year":2024,
     "image":  "https://dsc106.com/labs/lab02/images/empty.svg",
     "description": "A personal website showcasing my projects."
   },
   {
     "title": "Weather App",
+    "year":2026,
     "image":  "https://dsc106.com/labs/lab02/images/empty.svg",
     "description": "Displays live weather using an API."
   },
   {
     "title": "Game Project",
+    "year":2026,
     "image":  "https://dsc106.com/labs/lab02/images/empty.svg",
     "description": "A browser-based game using JavaScript."
   },
