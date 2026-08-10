@@ -1,28 +1,59 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sujal Sirimilla: Personal site and portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <script type="module" src=".\global.js"></script>
-    
-    <script src="index.js" type="module"></script>
+    <script type="module" src="./global.js"></script>
+    <script type="module" src="./index.js"></script>
 
-    <h1>Sujal Sirimilla</h1>
-    <p>I'm a developer building my personal site and portfolio.</p>
-    <img src="images/download.jpg" >
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Sujal Sirimilla</h1>
+            <p class="description">
+                I'm a developer building my personal site and portfolio.<br>
+                Passionate about web applications, data exploration, and creating beautiful user experiences.
+            </p>
+            
+            <div class="links">
+                <a href="https://github.com/ssirimilla" target="_blank" class="btn">GitHub</a>
+                <a href="https://linkedin.com/in/sujalsirimilla" target="_blank" class="btn">LinkedIn</a>
+                <a href="mailto:ssirimilla@example.com" class="btn btn-primary">Email Me</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="images/download.jpg" alt="Sujal Sirimilla">
+        </div>
+    </header>
 
-    <h2>Latest Projects</h2>
-    <div class="projects"></div>
+    <main>
+        <section class="projects-section">
+            <div class="projects-header">
+                <h2>My Projects</h2>
+                <input class="searchBar" type="search" aria-label="Search projects" placeholder="🔍 Search projects…">
+            </div>
 
-    <h2>GitHub Stats</h2>
-    <div id="profile-stats"></div>
+            <div class="stats-container">
+                <svg id="projects-pie-plot" viewBox="-50 -50 100 100"></svg>
+                <ul class="legend"></ul>
+                <button id="clear-filter-btn" class="btn" style="display:none; margin-top: 1rem;">Go Back (Clear Filter)</button>
+            </div>
+
+            <div class="projects"></div>
+        </section>
+
+        <section class="github-section">
+            <h2>GitHub Stats</h2>
+            <div id="profile-stats"></div>
+        </section>
+    </main>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </body>
-
 </html>
